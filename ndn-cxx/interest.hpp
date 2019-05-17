@@ -148,7 +148,7 @@ public: // element access
   }
 
 
-  unsigned int 
+  uint32_t 
   getPriority() const
   {
         return m_priority;
@@ -504,12 +504,13 @@ private:
   Name m_name;
   Selectors m_selectors; // NDN Packet Format v0.2 only
   mutable bool m_isCanBePrefixSet;
+  mutable uint32_t m_priority; /*NDN interest priority*/
   mutable optional<uint32_t> m_nonce;
   time::milliseconds m_interestLifetime;
   DelegationList m_forwardingHint;
   Block m_parameters; // NDN Packet Format v0.3 only
 
-  unsigned int m_priority; /*NDN interest priority*/
+
 
   mutable Block m_wire;
 

@@ -39,7 +39,7 @@ public:
     Interest interest(Name("/example/testApp/randomData"));
     interest.setInterestLifetime(2_s); // 2 seconds
     interest.setMustBeFresh(true);
-    interest.setPriority(2);    
+    interest.setPriority(0);    
 
     m_face.expressInterest(interest,
                            bind(&Consumer::onData, this,  _1, _2),

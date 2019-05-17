@@ -73,7 +73,7 @@ private:
     // m_keyChain.sign(data, <identityName>);
     // m_keyChain.sign(data, <certificate>);
 
-    int priority = interest.getPriority();
+    uint32_t priority = interest.getPriority();
     
     std::cout << "The priorty of the packet is " << priority << std::endl;
 
