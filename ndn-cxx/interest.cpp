@@ -304,7 +304,7 @@ Interest::decode02()
          NDN_THROW(Error("Priority element is malformed"));
      }
      std::memcpy(&priority, element->value(), sizeof(priority));
-     setPriority(priority);
+     m_priority = priority;
      ++element;
   }
   else {
@@ -416,7 +416,7 @@ Interest::decode03()
                NDN_THROW(Error("Priority element is malformed"));
            }
            std::memcpy(&priority, element->value(), sizeof(priority));
-           setPriority(priority);
+           m_priority = priority;
            lastElement = 6;
            break;
       }
