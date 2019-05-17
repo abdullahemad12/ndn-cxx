@@ -87,6 +87,7 @@ enum : uint32_t {
   KeyDigest                       = 29,
   LinkDelegation                  = 31,
   LinkPreference                  = 30,
+  Priority                        = 71, 
 
   NameComponentMin = 1,
   NameComponentMax = 65535,

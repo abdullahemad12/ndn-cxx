@@ -137,6 +137,12 @@ Interest::encode02(EncodingImpl<TAG>& encoder) const
   // Nonce
   uint32_t nonce = getNonce(); // if nonce was unset, getNonce generates a random nonce
   totalLength += encoder.prependByteArrayBlock(tlv::Nonce, reinterpret_cast<uint8_t*>(&nonce), sizeof(nonce));
+  
+  
+  // priority
+  uint8_t priority = getPriority();
+  totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
+
 
   // Selectors
   if (hasSelectors()) {
@@ -187,6 +193,9 @@ Interest::encode03(EncodingImpl<TAG>& encoder) const
   uint32_t nonce = getNonce(); // if nonce was unset, getNonce generates a random nonce
   totalLength += encoder.prependByteArrayBlock(tlv::Nonce, reinterpret_cast<uint8_t*>(&nonce), sizeof(nonce));
 
+  // priority
+  uint8_t priority = getPriority();
+  totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
 
   // ForwardingHint
   if (!getForwardingHint().empty()) {
