@@ -133,16 +133,16 @@ Interest::encode02(EncodingImpl<TAG>& encoder) const
     totalLength += prependNonNegativeIntegerBlock(encoder, tlv::InterestLifetime,
                                                   static_cast<uint64_t>(getInterestLifetime().count()));
   }
+  
+  // priority
+  uint32_t priority = getPriority();
+  totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
+
 
   // Nonce
   uint32_t nonce = getNonce(); // if nonce was unset, getNonce generates a random nonce
   totalLength += encoder.prependByteArrayBlock(tlv::Nonce, reinterpret_cast<uint8_t*>(&nonce), sizeof(nonce));
   
-  
-  // priority
-  uint8_t priority = getPriority();
-  totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
-
 
   // Selectors
   if (hasSelectors()) {
@@ -189,13 +189,15 @@ Interest::encode03(EncodingImpl<TAG>& encoder) const
                                                   static_cast<uint64_t>(getInterestLifetime().count()));
   }
 
+
+  // priority
+  uint32_t priority = getPriority();
+  totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
+
+
   // Nonce
   uint32_t nonce = getNonce(); // if nonce was unset, getNonce generates a random nonce
   totalLength += encoder.prependByteArrayBlock(tlv::Nonce, reinterpret_cast<uint8_t*>(&nonce), sizeof(nonce));
-
-  // priority
-  uint8_t priority = getPriority();
-  totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
 
   // ForwardingHint
   if (!getForwardingHint().empty()) {
@@ -297,7 +299,7 @@ Interest::decode02()
 
   // Priority
   if(element != m_wire.elements_end() && element->type() == tlv::Priority) {
-     uint8_t priority = 0;
+     uint32_t priority = 0;
      if(element->value_size() != sizeof(priority)) {
          NDN_THROW(Error("Priority element is malformed"));
      }
@@ -326,6 +328,7 @@ Interest::decode02()
   else {
     m_forwardingHint = {};
   }
+
 
   return element == m_wire.elements_end();
 }
@@ -408,7 +411,7 @@ Interest::decode03()
           if(lastElement >= 6) {
               NDN_THROW(Error("Priority element is out of order"));        
           }
-           uint8_t priority = 0;
+           uint32_t priority = 0;
            if(element->value_size() != sizeof(priority)) {
                NDN_THROW(Error("Priority element is malformed"));
            }
