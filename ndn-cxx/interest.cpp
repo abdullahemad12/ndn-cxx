@@ -295,6 +295,20 @@ Interest::decode02()
     return false;
   }
 
+  // Priority
+  if(element != m_wire.elements_end() && element->type() == tlv::Priority) {
+     uint8_t priority = 0;
+     if(element->value_size() != sizeof(priority)) {
+         NDN_THROW(Error("Priority element is malformed"));
+     }
+     std::memcpy(&priority, element->value(), sizeof(priority));
+     setPriority(priority);
+     ++element;
+  }
+  else {
+    return false;
+  }
+
   // InterestLifetime?
   if (element != m_wire.elements_end() && element->type() == tlv::InterestLifetime) {
     m_interestLifetime = time::milliseconds(readNonNegativeInteger(*element));
@@ -390,31 +404,44 @@ Interest::decode03()
         lastElement = 5;
         break;
       }
+      case tlv::Priority: {
+          if(lastElement >= 6) {
+              NDN_THROW(Error("Priority element is out of order"));        
+          }
+           uint8_t priority = 0;
+           if(element->value_size() != sizeof(priority)) {
+               NDN_THROW(Error("Priority element is malformed"));
+           }
+           std::memcpy(&priority, element->value(), sizeof(priority));
+           setPriority(priority);
+           lastElement = 6;
+           break;
+      }
       case tlv::InterestLifetime: {
-        if (lastElement >= 6) {
+        if (lastElement >= 7) {
           NDN_THROW(Error("InterestLifetime element is out of order"));
         }
         m_interestLifetime = time::milliseconds(readNonNegativeInteger(*element));
-        lastElement = 6;
+        lastElement = 7;
         break;
       }
       case tlv::HopLimit: {
-        if (lastElement >= 7) {
+        if (lastElement >= 8) {
           break; // HopLimit is non-critical, ignore out-of-order appearance
         }
         if (element->value_size() != 1) {
           NDN_THROW(Error("HopLimit element is malformed"));
         }
         // TLV-VALUE is ignored
-        lastElement = 7;
+        lastElement = 8;
         break;
       }
       case tlv::ApplicationParameters: {
-        if (lastElement >= 8) {
+        if (lastElement >= 9) {
           break; // ApplicationParameters is non-critical, ignore out-of-order appearance
         }
         m_parameters = *element;
-        lastElement = 8;
+        lastElement = 9;
         break;
       }
       default: {

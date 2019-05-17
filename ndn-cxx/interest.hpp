@@ -149,7 +149,7 @@ public: // element access
 
 
   unsigned int 
-  getPriority()
+  getPriority() const
   {
         return m_priority;
   }
