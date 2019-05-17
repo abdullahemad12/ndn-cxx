@@ -69,6 +69,10 @@ private:
     // m_keyChain.sign(data, <identityName>);
     // m_keyChain.sign(data, <certificate>);
 
+    int priority = interest.getPriority();
+    
+    std::cout << "The priorty of the packet is " << priority << std::endl;
+
     // Return Data packet to the requester
     std::cout << ">> D: " << *data << std::endl;
     m_face.put(*data);
