@@ -34,14 +34,18 @@ namespace examples {
 class Producer : noncopyable
 {
 public:
+  Producer(void)
+  {
+        m_face = new Face("127.0.0.1", "6363");
+  }
   void
   run()
   {
-    m_face.setInterestFilter("/example/testApp",
+    m_face->setInterestFilter("/example/testApp",
                              bind(&Producer::onInterest, this, _1, _2),
                              RegisterPrefixSuccessCallback(),
                              bind(&Producer::onRegisterFailed, this, _1, _2));
-    m_face.processEvents();
+    m_face->processEvents();
   }
 
 private:
@@ -75,7 +79,7 @@ private:
 
     // Return Data packet to the requester
     std::cout << ">> D: " << *data << std::endl;
-    m_face.put(*data);
+    m_face->put(*data);
   }
 
 
@@ -85,11 +89,11 @@ private:
     std::cerr << "ERROR: Failed to register prefix \""
               << prefix << "\" in local hub's daemon (" << reason << ")"
               << std::endl;
-    m_face.shutdown();
+    m_face->shutdown();
   }
 
 private:
-  Face m_face;
+  Face* m_face;
   KeyChain m_keyChain;
 };
 

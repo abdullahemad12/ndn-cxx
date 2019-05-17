@@ -25,6 +25,7 @@
 #include <boost/bind.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <boost/range/adaptor/reversed.hpp>
+#include <iostream>
 
 namespace ndn {
 namespace lp {
@@ -151,15 +152,18 @@ Packet::wireDecode(const Block& wire)
 
     if (!info.isRecognized && !info.canIgnore) {
       NDN_THROW(Error("unrecognized field " + to_string(element.type()) + " cannot be ignored"));
+      std::cout << "\n\n\n\n\n";
     }
 
     if (!isFirst) {
       if (info.tlvType == prev.tlvType && !info.isRepeatable) {
         NDN_THROW(Error("non-repeatable field " + to_string(element.type()) + " cannot be repeated"));
+        std::cout << "\n\n\n\n\n";
       }
 
       else if (info.tlvType != prev.tlvType && !compareFieldSortOrder(prev, info)) {
         NDN_THROW(Error("fields are not in correct sort order"));
+        std::cout << "\n\n\n\n\n";
       }
     }
 

@@ -160,7 +160,7 @@ protected:
       return;
 
     m_transport.close();
-    NDN_THROW(Transport::Error(error, "error while connecting to the forwarder"));
+    NDN_THROW(Transport::Error(error, "Timeout error while connecting to the forwarder"));
   }
 
   void
