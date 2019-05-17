@@ -135,7 +135,7 @@ Interest::encode02(EncodingImpl<TAG>& encoder) const
   }
   
   // priority
-  uint32_t priority = getPriority();
+  uint8_t priority = getPriority();
   totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
 
 
@@ -191,7 +191,7 @@ Interest::encode03(EncodingImpl<TAG>& encoder) const
 
 
   // priority
-  uint32_t priority = getPriority();
+  uint8_t priority = getPriority();
   totalLength += encoder.prependByteArrayBlock(tlv::Priority, reinterpret_cast<uint8_t*>(&priority), sizeof(priority));
 
 
@@ -299,7 +299,7 @@ Interest::decode02()
 
   // Priority
   if(element != m_wire.elements_end() && element->type() == tlv::Priority) {
-     uint32_t priority = 0;
+     uint8_t priority = 0;
      if(element->value_size() != sizeof(priority)) {
          NDN_THROW(Error("Priority element is malformed"));
      }
@@ -411,7 +411,7 @@ Interest::decode03()
           if(lastElement >= 6) {
               NDN_THROW(Error("Priority element is out of order"));        
           }
-           uint32_t priority = 0;
+           uint8_t priority = 0;
            if(element->value_size() != sizeof(priority)) {
                NDN_THROW(Error("Priority element is malformed"));
            }

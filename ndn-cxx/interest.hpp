@@ -148,14 +148,14 @@ public: // element access
   }
 
 
-  uint32_t 
+  uint8_t 
   getPriority() const
   {
         return m_priority;
   }
 
   Interest& 
-  setPriority(const unsigned int priority)
+  setPriority(const uint8_t priority)
   {
         if(priority < PRIORITY_LEVELS)
         {
@@ -504,7 +504,7 @@ private:
   Name m_name;
   Selectors m_selectors; // NDN Packet Format v0.2 only
   mutable bool m_isCanBePrefixSet;
-  mutable uint32_t m_priority; /*NDN interest priority*/
+  mutable uint8_t m_priority; /*NDN interest priority*/
   mutable optional<uint32_t> m_nonce;
   time::milliseconds m_interestLifetime;
   DelegationList m_forwardingHint;
