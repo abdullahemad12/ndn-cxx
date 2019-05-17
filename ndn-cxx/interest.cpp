@@ -59,6 +59,7 @@ Interest::Interest(const Name& name, time::milliseconds lifetime)
   if (!boost::logic::indeterminate(s_defaultCanBePrefix)) {
     setCanBePrefix(bool(s_defaultCanBePrefix));
   }
+  this->setPriority(PRIORITY_LEVELS - 1);
 }
 
 Interest::Interest(const Block& wire)
@@ -185,6 +186,7 @@ Interest::encode03(EncodingImpl<TAG>& encoder) const
   // Nonce
   uint32_t nonce = getNonce(); // if nonce was unset, getNonce generates a random nonce
   totalLength += encoder.prependByteArrayBlock(tlv::Nonce, reinterpret_cast<uint8_t*>(&nonce), sizeof(nonce));
+
 
   // ForwardingHint
   if (!getForwardingHint().empty()) {

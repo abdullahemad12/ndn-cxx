@@ -22,6 +22,9 @@
 #ifndef NDN_INTEREST_HPP
 #define NDN_INTEREST_HPP
 
+
+#define PRIORITY_LEVELS 4
+
 #include "ndn-cxx/delegation-list.hpp"
 #include "ndn-cxx/name.hpp"
 #include "ndn-cxx/selectors.hpp"
@@ -144,6 +147,26 @@ public: // element access
     return *this;
   }
 
+
+  unsigned int 
+  getPriority()
+  {
+        return m_priority;
+  }
+
+  Interest& 
+  setPriority(const unsigned int priority)
+  {
+        if(priority < PRIORITY_LEVELS)
+        {
+          this->m_priority = priority;      
+        }
+        else
+        {
+          this->m_priority = PRIORITY_LEVELS - 1;
+        }
+        return *this;
+  }
   /** @brief Declare the default CanBePrefix setting of the application.
    *
    *  As part of transitioning to NDN Packet Format v0.3, the default setting for CanBePrefix
@@ -477,7 +500,7 @@ public:
 
 private:
   static boost::logic::tribool s_defaultCanBePrefix;
-
+  
   Name m_name;
   Selectors m_selectors; // NDN Packet Format v0.2 only
   mutable bool m_isCanBePrefixSet;
@@ -485,6 +508,8 @@ private:
   time::milliseconds m_interestLifetime;
   DelegationList m_forwardingHint;
   Block m_parameters; // NDN Packet Format v0.3 only
+
+  unsigned int m_priority; /*NDN interest priority*/
 
   mutable Block m_wire;
 
